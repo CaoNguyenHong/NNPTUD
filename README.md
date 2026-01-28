@@ -1,4 +1,4 @@
-# NNPTUD-Ngay1
+
 Cao Nguyen Hong
 2280601083
 22DTHH2
