@@ -11,7 +11,7 @@
 <div class="container mt-5">
     <h2 class="mb-4 text-center">📦 Product Dashboard</h2>
 
-    <!-- Search + Page size + Export + Pagination -->
+    <!-- Toolbar -->
     <div class="row mb-3 align-items-center">
         <div class="col-md-3">
             <input id="searchInput" class="form-control" placeholder="🔍 Tìm kiếm theo title...">
@@ -26,10 +26,18 @@
         </div>
 
         <div class="col-md-2">
-            <button class="btn btn-success w-100" onclick="exportCSV()">⬇ Export CSV</button>
+            <button class="btn btn-primary w-100" onclick="openCreateModal()">
+                ➕ Tạo sản phẩm
+            </button>
         </div>
 
-        <div class="col-md-5">
+        <div class="col-md-2">
+            <button class="btn btn-success w-100" onclick="exportCSV()">
+                ⬇ Export CSV
+            </button>
+        </div>
+
+        <div class="col-md-3">
             <ul class="pagination justify-content-end mb-0" id="pagination"></ul>
         </div>
     </div>
@@ -57,42 +65,45 @@
     </div>
 </div>
 
-<!-- ===== MODAL VIEW + EDIT ===== -->
-<div class="modal fade" id="productModal" tabindex="-1">
+<!-- ===== MODAL CREATE PRODUCT ===== -->
+<div class="modal fade" id="createModal" tabindex="-1">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
 
             <div class="modal-header">
-                <h5 class="modal-title">Product Detail</h5>
+                <h5 class="modal-title">➕ Tạo sản phẩm mới</h5>
                 <button class="btn-close" data-bs-dismiss="modal"></button>
             </div>
 
             <div class="modal-body">
-                <input type="hidden" id="modalId">
-
                 <div class="mb-3">
                     <label class="form-label">Title</label>
-                    <input id="modalTitle" class="form-control">
+                    <input id="createTitle" class="form-control">
                 </div>
 
                 <div class="mb-3">
                     <label class="form-label">Price</label>
-                    <input id="modalPrice" type="number" class="form-control">
+                    <input id="createPrice" type="number" class="form-control">
                 </div>
 
                 <div class="mb-3">
                     <label class="form-label">Description</label>
-                    <textarea id="modalDescription" class="form-control"></textarea>
+                    <textarea id="createDescription" class="form-control"></textarea>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Category ID</label>
+                    <input id="createCategory" type="number" value="1" class="form-control">
                 </div>
 
                 <div class="mb-3">
                     <label class="form-label">Image URL</label>
-                    <input id="modalImage" class="form-control">
+                    <input id="createImage" class="form-control">
                 </div>
             </div>
 
             <div class="modal-footer">
-                <button class="btn btn-primary" onclick="updateProduct()">💾 Save</button>
+                <button class="btn btn-success" onclick="createProduct()">💾 Create</button>
                 <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             </div>
 
