@@ -16,10 +16,10 @@
 <div class="container mt-5">
     <h2 class="mb-4 text-center">📦 Product Dashboard</h2>
 
-    <!-- Search + Page size + Pagination -->
+    <!-- Search + Page size + Export + Pagination -->
     <div class="row mb-3 align-items-center">
         <!-- Search -->
-        <div class="col-md-4">
+        <div class="col-md-3">
             <input
                 type="text"
                 id="searchInput"
@@ -29,12 +29,19 @@
         </div>
 
         <!-- Page size -->
-        <div class="col-md-3">
+        <div class="col-md-2">
             <select id="pageSize" class="form-select">
                 <option value="5">5 / trang</option>
                 <option value="10" selected>10 / trang</option>
                 <option value="20">20 / trang</option>
             </select>
+        </div>
+
+        <!-- Export CSV -->
+        <div class="col-md-2">
+            <button class="btn btn-success w-100" onclick="exportCSV()">
+                ⬇ Export CSV
+            </button>
         </div>
 
         <!-- Pagination -->

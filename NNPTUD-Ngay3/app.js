@@ -61,7 +61,6 @@ function renderTable() {
         tableBody.appendChild(tr);
     });
 
-    // init tooltip
     document
         .querySelectorAll('[data-bs-toggle="tooltip"]')
         .forEach(el => new bootstrap.Tooltip(el));
@@ -73,14 +72,12 @@ function renderPagination() {
 
     const totalPages = Math.ceil(filteredProducts.length / pageSize);
 
-    // Prev
     pagination.innerHTML += `
         <li class="page-item ${currentPage === 1 ? "disabled" : ""}">
             <a class="page-link" href="#" onclick="changePage(${currentPage - 1})">Prev</a>
         </li>
     `;
 
-    // Page numbers
     for (let i = 1; i <= totalPages; i++) {
         pagination.innerHTML += `
             <li class="page-item ${i === currentPage ? "active" : ""}">
@@ -89,7 +86,6 @@ function renderPagination() {
         `;
     }
 
-    // Next
     pagination.innerHTML += `
         <li class="page-item ${currentPage === totalPages ? "disabled" : ""}">
             <a class="page-link" href="#" onclick="changePage(${currentPage + 1})">Next</a>
@@ -144,4 +140,41 @@ function sortByPrice() {
     priceSortAsc = !priceSortAsc;
     currentPage = 1;
     render();
+}
+
+// ===== EXPORT CSV (VIEW HIỆN TẠI) =====
+function exportCSV() {
+    // chỉ export data của trang hiện tại
+    const start = (currentPage - 1) * pageSize;
+    const end = start + pageSize;
+    const pageData = filteredProducts.slice(start, end);
+
+    if (pageData.length === 0) {
+        alert("Không có dữ liệu để export!");
+        return;
+    }
+
+    const headers = ["ID", "Title", "Price", "Category", "Image"];
+    const rows = pageData.map(p => [
+        p.id,
+        `"${p.title.replace(/"/g, '""')}"`,
+        p.price,
+        `"${p.category?.name || ""}"`,
+        p.images?.[0] || ""
+    ]);
+
+    let csvContent = headers.join(",") + "\n";
+    rows.forEach(row => {
+        csvContent += row.join(",") + "\n";
+    });
+
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "products_view.csv";
+    a.click();
+
+    URL.revokeObjectURL(url);
 }
