@@ -1,15 +1,21 @@
 const API_URL = "https://api.escuelajs.co/api/v1/products";
+
 const tableBody = document.getElementById("productTable");
 const searchInput = document.getElementById("searchInput");
 const pageSizeSelect = document.getElementById("pageSize");
 const pagination = document.getElementById("pagination");
 
+// ===== DATA STATE =====
 let allProducts = [];
 let filteredProducts = [];
 let currentPage = 1;
 let pageSize = Number(pageSizeSelect.value);
 
-// Fetch API
+// sort state
+let titleSortAsc = true;
+let priceSortAsc = true;
+
+// ===== FETCH API =====
 fetch(API_URL)
     .then(res => res.json())
     .then(products => {
@@ -18,13 +24,13 @@ fetch(API_URL)
         render();
     });
 
-// Render tổng
+// ===== MAIN RENDER =====
 function render() {
     renderTable();
     renderPagination();
 }
 
-// Render table theo page
+// ===== TABLE =====
 function renderTable() {
     tableBody.innerHTML = "";
 
@@ -35,6 +41,7 @@ function renderTable() {
     pageData.forEach(product => {
         const tr = document.createElement("tr");
 
+        // tooltip description
         tr.setAttribute("data-bs-toggle", "tooltip");
         tr.setAttribute("title", product.description || "No description");
 
@@ -44,19 +51,23 @@ function renderTable() {
             <td>${product.price}</td>
             <td>${product.category?.name || ""}</td>
             <td>
-                <img src="${product.images?.[0] || ""}"
-                     style="width:60px;height:60px;object-fit:cover;">
+                <img
+                    src="${product.images?.[0] || ""}"
+                    style="width:60px;height:60px;object-fit:cover"
+                >
             </td>
         `;
+
         tableBody.appendChild(tr);
     });
 
+    // init tooltip
     document
         .querySelectorAll('[data-bs-toggle="tooltip"]')
         .forEach(el => new bootstrap.Tooltip(el));
 }
 
-// Render pagination
+// ===== PAGINATION =====
 function renderPagination() {
     pagination.innerHTML = "";
 
@@ -69,7 +80,7 @@ function renderPagination() {
         </li>
     `;
 
-    // Pages
+    // Page numbers
     for (let i = 1; i <= totalPages; i++) {
         pagination.innerHTML += `
             <li class="page-item ${i === currentPage ? "active" : ""}">
@@ -86,26 +97,51 @@ function renderPagination() {
     `;
 }
 
-// Change page
 function changePage(page) {
     currentPage = page;
-    renderTable();
-    renderPagination();
+    render();
 }
 
-// Search
+// ===== SEARCH =====
 searchInput.addEventListener("input", function () {
     const keyword = this.value.toLowerCase();
+
     filteredProducts = allProducts.filter(p =>
         p.title.toLowerCase().includes(keyword)
     );
+
     currentPage = 1;
     render();
 });
 
-// Change page size
+// ===== PAGE SIZE =====
 pageSizeSelect.addEventListener("change", function () {
     pageSize = Number(this.value);
     currentPage = 1;
     render();
 });
+
+// ===== SORT =====
+function sortByTitle() {
+    filteredProducts.sort((a, b) => {
+        if (a.title.toLowerCase() < b.title.toLowerCase())
+            return titleSortAsc ? -1 : 1;
+        if (a.title.toLowerCase() > b.title.toLowerCase())
+            return titleSortAsc ? 1 : -1;
+        return 0;
+    });
+
+    titleSortAsc = !titleSortAsc;
+    currentPage = 1;
+    render();
+}
+
+function sortByPrice() {
+    filteredProducts.sort((a, b) =>
+        priceSortAsc ? a.price - b.price : b.price - a.price
+    );
+
+    priceSortAsc = !priceSortAsc;
+    currentPage = 1;
+    render();
+}

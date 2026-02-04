@@ -43,9 +43,7 @@
                 <ul
                     class="pagination justify-content-end mb-0"
                     id="pagination"
-                >
-                    <!-- JS render -->
-                </ul>
+                ></ul>
             </nav>
         </div>
     </div>
@@ -56,20 +54,34 @@
             <thead class="table-dark">
                 <tr>
                     <th style="width:80px">ID</th>
-                    <th>Title</th>
-                    <th style="width:120px">Price ($)</th>
+
+                    <th>
+                        Title
+                        <button
+                            class="btn btn-sm btn-light ms-1"
+                            onclick="sortByTitle()"
+                        >⇅</button>
+                    </th>
+
+                    <th style="width:120px">
+                        Price ($)
+                        <button
+                            class="btn btn-sm btn-light ms-1"
+                            onclick="sortByPrice()"
+                        >⇅</button>
+                    </th>
+
                     <th style="width:180px">Category</th>
                     <th style="width:120px">Image</th>
                 </tr>
             </thead>
-            <tbody id="productTable">
-                <!-- JS render -->
-            </tbody>
+
+            <tbody id="productTable"></tbody>
         </table>
     </div>
 </div>
 
-<!-- Bootstrap 5 JS (BẮT BUỘC cho tooltip & pagination UI) -->
+<!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 <!-- App JS -->
